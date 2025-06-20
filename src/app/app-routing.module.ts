@@ -4,7 +4,11 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
+  },
+  {
+    path: 'pokemon/:id',
+    loadChildren: () => import('./pages/pokemon/pokemon.module').then(m => m.PokemonPageModule)
   },
   {
     path: '',
@@ -12,8 +16,8 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+    path: 'pokemon',
+    loadChildren: () => import('./pages/pokemon/pokemon.module').then(m => m.PokemonPageModule)
   },
 ];
 
