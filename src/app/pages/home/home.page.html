@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      PokeWiki
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">PokeWiki</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="body-container">
+    <ion-searchbar placeholder="Pesquisar" color="light" show-clear-button="always"></ion-searchbar>
+
+    <section class="pokemon-cards-container">
+      <ion-card *ngFor="let pokemon of pokemons" (click)="showPokemon(pokemon.url)">
+        <ion-card-header>
+          <div class="pokemon-card">
+            <ion-card-title>{{ pokemon.name }}</ion-card-title>
+
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </div>
+        </ion-card-header>
+      </ion-card>
+    </section>
+  </div>
+</ion-content>
