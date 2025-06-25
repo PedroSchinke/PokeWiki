@@ -14,10 +14,21 @@
   </ion-header>
 
   <div class="body-container">
-    <ion-searchbar placeholder="Pesquisar" color="light" show-clear-button="always"></ion-searchbar>
+    <div class="introducao-container">
+      <h1>Bem vindo ao PokeWiki!</h1>
+      <h3>Sua enciclopédia Pokémon</h3>
+    </div>
+
+    <ion-searchbar
+      placeholder="Pesquisar Pokémon"
+      color="light"
+      show-clear-button="always"
+      style="width: 80%;"
+      (ionInput)="filter($event)"
+    ></ion-searchbar>
 
     <section class="pokemon-cards-container">
-      <ion-card *ngFor="let pokemon of pokemons" (click)="showPokemon(pokemon.url)">
+      <ion-card *ngFor="let pokemon of pokemonsExibidos" (click)="showPokemon(pokemon.url)">
         <ion-card-header>
           <div class="pokemon-card">
             <ion-card-title>{{ pokemon.name }}</ion-card-title>
@@ -28,4 +39,13 @@
       </ion-card>
     </section>
   </div>
+
+  <mat-paginator
+    #paginator
+    [length]="total"
+    [pageSize]="perPage"
+    [pageSizeOptions]="[10, 25, 100]"
+    aria-label="Paginador"
+    (page)="handlePageEvent($event)"
+  ></mat-paginator>
 </ion-content>

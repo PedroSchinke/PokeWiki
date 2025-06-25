@@ -27,15 +27,35 @@
 }
 
 .body-container {
+  margin-top: 140px;
   padding: 10px 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.introducao-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.introducao-container h1 {
+  font-size: 3.625rem;
+  font-weight: 900;
+}
+
+.introducao-container h3 {
+  margin-top: 0;
+  color: #9b9b9b;
 }
 
 .pokemon-cards-container {
-  display: flex;
+  width: 80%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   justify-content: space-around;
-  flex-direction: column;
 }
 
 .pokemon-card {

@@ -17,8 +17,12 @@ interface Pokemon {
 export class HomePage implements OnInit {
   private pokeApiUrl = environment.pokeApiURL;
   protected pokemons:Pokemon[] = [];
-  private perPage = 10;
-  private offset = 0;
+  protected pokemonsExibidos:Pokemon[] = [];
+  protected filtro = '';
+  protected page = 0;
+  protected perPage = 10;
+  protected total = 0;
+  protected offset = 0;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -26,18 +30,41 @@ export class HomePage implements OnInit {
     this.getPokemons();
   }
 
+  async filter(event:any = null) {
+    this.filtro = event.target.value;
+
+    const resultado = this.pokemons.filter(p =>
+      p.name.toLowerCase().includes(this.filtro)
+    );
+
+    this.total = resultado.length;
+
+    this.pokemonsExibidos = resultado.slice(this.offset, this.perPage);
+  }
+
   async getPokemons() {
     this.http
-      .get(`${this.pokeApiUrl}/pokemon?limit=${this.perPage}&offset=${this.offset}`)
+      .get(`${this.pokeApiUrl}/pokemon?limit=2000&offset=0`)
       .subscribe((data: any) => {
-        console.log(data);
         this.pokemons = data.results;
+        this.pokemonsExibidos = this.pokemons.slice(this.offset, this.perPage);
+        this.total = data.count;
       });
+  }
+
+  handlePageEvent(event:any) {
+    this.perPage = event.pageSize;
+    this.offset = event.pageIndex * this.perPage;
+
+    const resultado = this.pokemons.filter(p =>
+      p.name.toLowerCase().includes(this.filtro)
+    );
+
+    this.pokemonsExibidos = resultado.slice(this.offset, this.offset + this.perPage);
   }
 
   showPokemon(url:string) {
     const id = url.split('/').filter(Boolean).pop(); // "1"
-    console.log(id);
 
     this.router.navigate(['/pokemon', id]);
   }
