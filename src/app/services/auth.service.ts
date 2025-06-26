@@ -13,11 +13,11 @@ export class AuthService {
   async login(email: string, password: string) {
     const response = await this.http
       .post(`${this.apiUrl}/login`, { email, password })
-      .toPromise();
-
-    if (response) {
-      localStorage.setItem('token', response.token);
-    }
+      .subscribe((response:any) => {
+        if (response) {
+          localStorage.setItem('token', response.token);
+        }
+      });
 
     return response;
   }

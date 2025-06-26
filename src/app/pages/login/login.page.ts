@@ -1,7 +1,27 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  NgForm,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { IonicModule, NavController, ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
+import {MatInput, MatInputModule} from "@angular/material/input";
+import {MatCard, MatCardContent} from "@angular/material/card";
+import {RouterLink} from "@angular/router";
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
   selector: 'app-login',
@@ -9,11 +29,20 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.page.scss'],
   imports: [
     IonicModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCard,
+    MatCardContent,
+    RouterLink
   ]
 })
 export class LoginPage {
   loginForm: FormGroup;
+
+  emailFormControl = new FormControl('',);
+
+  matcher = new MyErrorStateMatcher();
 
   constructor(
     private fb: FormBuilder,

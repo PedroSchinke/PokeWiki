@@ -1,23 +1,41 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Login</ion-title>
+    <ion-title>PokeWiki</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" formControlName="email"></ion-input>
-    </ion-item>
+<ion-content class="main">
+  <mat-card class="form-container" appearance="outlined">
+    <mat-card-content>
+      <h1 class="card-title">Acesse sua conta</h1>
 
-    <ion-item>
-      <ion-label position="floating">Senha</ion-label>
-      <ion-input type="password" formControlName="password"></ion-input>
-    </ion-item>
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <mat-form-field class="example-full-width">
+          <mat-label>Email</mat-label>
 
-    <ion-button expand="block" type="submit" [disabled]="loginForm.invalid">
-      Entrar
-    </ion-button>
-  </form>
+          <input
+            type="email"
+            matInput
+            [formControl]="emailFormControl"
+          >
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Senha</mat-label>
+
+          <input
+            type="password"
+            matInput
+            [formControl]="emailFormControl"
+          >
+        </mat-form-field>
+
+        <ion-button class="botao-entrar" expand="block" type="submit" [disabled]="loginForm.invalid">
+          Entrar
+        </ion-button>
+
+        <p [routerLink]="['/cadastrar']" class="botao-criar-conta">Criar conta</p>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </ion-content>
