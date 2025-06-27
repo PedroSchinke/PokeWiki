@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from "../../../environments/environment";
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { environment } from "../../../environments/environment";
+import { forkJoin } from "rxjs";
+import primeiraLetraMaiuscula from "../../helpers/primeiraLetraMaiuscula";
 
 interface Pokemon {
   name: string;
@@ -35,6 +37,9 @@ export class PokemonPage implements OnInit {
     types: [],
     sprites: {}
   };
+  protected species:any = [];
+  protected evolutionChain:any = [];
+  protected abilities:any = [];
   protected pokemonImages:any = [];
   protected pokemonImage = null;
   protected totalImages = 0;
@@ -54,8 +59,34 @@ export class PokemonPage implements OnInit {
         console.log(data);
         this.pokemon = data;
 
-        this.pokemon.abilities.forEach((ability:any) => {
-          this.getAbilities(ability.ability.url);
+        const abilityRequests = this.pokemon.abilities.map((ability:any) =>
+          this.http.get(ability.ability.url)
+        );
+
+        forkJoin(abilityRequests).subscribe((data:any) => {
+          this.abilities = data;
+        });
+
+        this.http.get(this.pokemon.species.url).subscribe((data:any) => {
+          this.species = data;
+
+          this.http.get(this.species.evolution_chain.url).subscribe((data:any) => {
+            const primeiraEvolucao = data.chain.species;
+
+            this.evolutionChain.push({ url: primeiraEvolucao.url, name: primeiraEvolucao.name });
+
+            if (data.chain.evolves_to.length > 0) {
+              const segundaEvolucao = data.chain.evolves_to[0].species;
+
+              this.evolutionChain.push({ url: segundaEvolucao.url, name: segundaEvolucao.name });
+
+              if (data.chain.evolves_to[0].evolves_to.length > 0) {
+                const terceiraEvolucao = data.chain.evolves_to[0].evolves_to[0].species;
+
+                this.evolutionChain.push({ url: terceiraEvolucao.url, name: terceiraEvolucao.name });
+              }
+            }
+          });
         });
 
         Object.values(this.pokemon.sprites.other['official-artwork']).forEach((img) => {
@@ -71,20 +102,14 @@ export class PokemonPage implements OnInit {
         if (this.pokemonImages.length > 0) {
           this.pokemonImage = this.pokemonImages[0];
         }
-
-        console.log(this.pokemonImages)
       });
   }
 
-  primeiraLetraMaiuscula(string:string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
   getAbilities(url:string) {
-    // this.http.get(url.slice(0, -1))
-    //   .subscribe((data:any) => {
-    //     console.log(data);
-    //   });
+    this.http.get(url.slice(0, -1))
+      .subscribe((data:any) => {
+        this.abilities.push(data);
+      });
   }
 
   previousImage() {
@@ -117,5 +142,13 @@ export class PokemonPage implements OnInit {
     this.pokemonImage = this.pokemonImages[this.imageIndex + 1];
     this.imageIndex = nextIndex;
   }
+
+  getAbilityEmIngles(habilidades:[]):any {
+    return habilidades.find((hab:any) => {
+      return hab.language.name === 'en';
+    });
+  }
+
+  protected readonly primeiraLetraMaiuscula = primeiraLetraMaiuscula;
 }
 

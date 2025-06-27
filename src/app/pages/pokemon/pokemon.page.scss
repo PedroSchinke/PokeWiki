@@ -13,6 +13,7 @@ main {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 20px;
   background: #1e1e1e;
   border-radius: 20px;
 }
@@ -32,7 +33,36 @@ main {
   gap: 5px;
 }
 
+.divisor {
+  height: 1px;
+  margin: 12px 0;
+  background: #6e6e6e;
+  border: none;
+}
+
+.habilidades-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.habilidades-section span {
+  font-size: 1.1rem;
+}
+
+.habilidade-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.habilidade-container span {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
 .image-container {
+  min-width: 48%;
   display: flex;
   align-items: center;
 }
