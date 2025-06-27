@@ -31,7 +31,7 @@
       <ion-card *ngFor="let pokemon of pokemonsExibidos" (click)="showPokemon(pokemon.url)">
         <ion-card-header>
           <div class="pokemon-card">
-            <ion-card-title>{{ pokemon.name }}</ion-card-title>
+            <ion-card-title>{{ primeiraLetraMaiuscula(pokemon.name) }}</ion-card-title>
 
             <ion-icon name="chevron-forward-outline"></ion-icon>
           </div>

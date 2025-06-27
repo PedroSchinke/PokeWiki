@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from "../../../environments/environment";
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { environment } from "../../../environments/environment";
+import primeiraLetraMaiuscula from '../../helpers/primeiraLetraMaiuscula';
 
 interface Pokemon {
   name: string;
@@ -68,4 +69,6 @@ export class HomePage implements OnInit {
 
     this.router.navigate(['/pokemon', id]);
   }
+
+  protected readonly primeiraLetraMaiuscula = primeiraLetraMaiuscula;
 }
