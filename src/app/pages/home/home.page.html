@@ -38,14 +38,15 @@
         </ion-card-header>
       </ion-card>
     </section>
-  </div>
 
-  <mat-paginator
-    #paginator
-    [length]="total"
-    [pageSize]="perPage"
-    [pageSizeOptions]="[10, 25, 100]"
-    aria-label="Paginador"
-    (page)="handlePageEvent($event)"
-  ></mat-paginator>
+    <mat-paginator
+      #paginator
+      class="paginator"
+      [length]="total"
+      [pageSize]="perPage"
+      [pageSizeOptions]="[10, 25, 100]"
+      aria-label="Paginador"
+      (page)="handlePageEvent($event)"
+    ></mat-paginator>
+  </div>
 </ion-content>
