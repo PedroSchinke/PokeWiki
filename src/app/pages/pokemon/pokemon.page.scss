@@ -1,5 +1,48 @@
+main {
+  padding: 20px;
+}
+
 .tags-container {
   margin-top: 10px;
   display: flex;
   gap: 5px;
+}
+
+.card {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: #1e1e1e;
+  border-radius: 20px;
+}
+
+.card p {
+  margin: 8px 0;
+}
+
+.card-title {
+  margin-bottom: 5px;
+  font-size: 2rem;
+}
+
+.chip-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.image-container {
+  display: flex;
+  align-items: center;
+}
+
+.change-image-button {
+  background: #ccc;
+}
+
+.image {
+  position: relative !important;
+  width: 400px !important;
+  height: 400px !important;
 }
