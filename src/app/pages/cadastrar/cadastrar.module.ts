@@ -4,18 +4,18 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { MatInputModule } from "@angular/material/input";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { CadastrarComponent } from "./cadastrar.component";
+import { CadastrarPageRoutingModule } from './cadastrar-routing.module';
+
+import { CadastrarPage } from './cadastrar.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CadastrarComponent,
-    MatFormFieldModule,
-    MatInputModule
+    CadastrarPageRoutingModule,
+    CadastrarPage
   ],
+  declarations: []
 })
 export class CadastrarPageModule {}

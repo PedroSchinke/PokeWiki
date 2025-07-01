@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>PokeWiki</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <mat-card class="form-container" appearance="outlined">
+    <mat-card-content>
+      <h1 class="card-title">Crie sua conta</h1>
+
+      <form (ngSubmit)="cadastrarUsuario()">
+        <mat-form-field class="example-full-width">
+          <mat-label>Nome</mat-label>
+
+          <input [(ngModel)]="nome" name="nome" type="text" matInput>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Email</mat-label>
+
+          <input [(ngModel)]="email" name="email" type="email" matInput>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Senha</mat-label>
+
+          <input [(ngModel)]="senha" name="senha" type="password" matInput>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Confirme sua senha</mat-label>
+
+          <input [(ngModel)]="senhaConfirmada" name="senhaConfirmada" type="password" matInput>
+        </mat-form-field>
+
+        <button class="botao-criar-conta" type="submit" mat-fab>Criar Conta</button>
+
+        <p *ngIf="alertaVisivel" class="mensagem-alerta">{{ alertaMensagem }}</p>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</ion-content>
