@@ -2,6 +2,10 @@ main {
   padding: 20px;
 }
 
+h2 {
+  margin-top: 8px;
+}
+
 .tags-container {
   margin-top: 10px;
   display: flex;
@@ -11,11 +15,22 @@ main {
 .card {
   padding: 10px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   gap: 20px;
   background: #1e1e1e;
   border-radius: 20px;
+}
+
+.infos-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.dados-gerais-container {
+  max-width: 50%;
 }
 
 .card p {
@@ -24,7 +39,8 @@ main {
 
 .card-title {
   margin-bottom: 5px;
-  font-size: 2rem;
+  font-size: 2.8rem;
+  font-weight: 600;
 }
 
 .chip-container {
@@ -62,9 +78,13 @@ main {
 }
 
 .image-container {
-  min-width: 48%;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  min-width: 40%;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .change-image-button {
@@ -75,4 +95,16 @@ main {
   position: relative !important;
   width: 400px !important;
   height: 400px !important;
+}
+
+.evolucoes-container {
+  padding: 0 16px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.evolucoes-buttons-container {
+  display: flex;
+  gap: 10px;
 }

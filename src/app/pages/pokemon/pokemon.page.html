@@ -22,46 +22,66 @@
           </mat-card-subtitle>
         </mat-card-header>
 
-        <mat-card-content>
-          <div class="chip-container">
-            <mat-chip *ngFor="let type of pokemon.types">{{ type.type.name }}</mat-chip>
-          </div>
+        <mat-card-content class="infos-container">
+          <div class="dados-gerais-container">
+            <div class="chip-container">
+              <mat-chip *ngFor="let type of pokemon.types">{{ type.type.name }}</mat-chip>
+            </div>
 
-          <p><strong>Altura: </strong>{{ pokemon.height }}</p>
-          <p><strong>Peso: </strong>{{ pokemon.weight }}</p>
-          <p><strong>XP Base: </strong>{{ pokemon.base_experience }}</p>
+            <p><strong>Altura: </strong>{{ pokemon.height }}</p>
+            <p><strong>Peso: </strong>{{ pokemon.weight }}</p>
+            <p><strong>XP Base: </strong>{{ pokemon.base_experience }}</p>
 
-          <hr class="divisor" />
+            <hr class="divisor" />
 
-          <div class="habilidades-section">
-            <span>Habilidades:</span>
+            <div class="habilidades-section">
+              <h2>Habilidades:</h2>
 
-            <div *ngFor="let habilidade of abilities" class="habilidade-container">
-              <span>{{ primeiraLetraMaiuscula(habilidade.name) }}</span>
+              <div *ngFor="let habilidade of abilities" class="habilidade-container">
+                <span>{{ primeiraLetraMaiuscula(habilidade.name) }}</span>
 
-              <p>{{ getAbilityEmIngles(habilidade.effect_entries).effect }}</p>
+                <p>{{ getAbilityEmIngles(habilidade.effect_entries).effect }}</p>
+              </div>
             </div>
           </div>
+
+          <div class="image-container">
+            <button mat-fab class="change-image-button" aria-label="Seta para a esquerda" (click)="previousImage()">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <img
+              priority
+              *ngIf="pokemonImage"
+              mat-card-image [ngSrc]="pokemonImage"
+              [alt]="'Image of ' + pokemon.name"
+              class="image"
+              fill
+            >
+
+            <button mat-fab class="change-image-button" aria-label="Seta para a direita" (click)="nextImage()">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
         </mat-card-content>
-      </div>
 
-      <div class="image-container">
-        <button mat-fab class="change-image-button" aria-label="Seta para a esquerda" (click)="previousImage()">
-          <mat-icon>chevron_left</mat-icon>
-        </button>
+        <hr class="divisor" style="margin: 12px 15px;" />
 
-        <img
-          priority
-          *ngIf="pokemonImage"
-          mat-card-image [ngSrc]="pokemonImage"
-          [alt]="'Photo of ' + pokemon.name"
-          class="image"
-          fill
-        >
+        <mat-card-actions class="evolucoes-container">
+          <h2>Cadeia de Evolução:</h2>
 
-        <button mat-fab class="change-image-button" aria-label="Seta para a direita" (click)="nextImage()">
-          <mat-icon>chevron_right</mat-icon>
-        </button>
+          <div class="evolucoes-buttons-container">
+            <button
+              *ngFor="let evolucao of evolutionChain"
+              mat-fab
+              extended
+              [disabled]="evolucao.name === pokemon.name"
+              (click)="showPokemon(evolucao.url)"
+            >
+              {{ primeiraLetraMaiuscula(evolucao.name) }}
+            </button>
+          </div>
+        </mat-card-actions>
       </div>
     </mat-card>
   </main>

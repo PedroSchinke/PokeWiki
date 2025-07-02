@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { PokemonPageRoutingModule } from './pokemon-routing.module';
 import { PokemonPage } from './pokemon.page';
 import {
-  MatCard,
+  MatCard, MatCardActions,
   MatCardContent,
   MatCardHeader,
   MatCardImage,
   MatCardSubtitle,
   MatCardTitle
 } from "@angular/material/card";
-import {MatChip} from "@angular/material/chips";
-import {MatIcon, MatIconModule} from "@angular/material/icon";
-import {MatFabButton} from "@angular/material/button";
+import { MatChip } from "@angular/material/chips";
+import { MatIcon, MatIconModule } from "@angular/material/icon";
+import { MatFabButton } from "@angular/material/button";
 
 @NgModule({
   imports: [
@@ -32,7 +32,8 @@ import {MatFabButton} from "@angular/material/button";
     NgOptimizedImage,
     MatIcon,
     MatFabButton,
-    MatIconModule
+    MatIconModule,
+    MatCardActions
   ],
   declarations: [PokemonPage]
 })

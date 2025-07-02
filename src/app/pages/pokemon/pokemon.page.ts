@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from "../../../environments/environment";
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from "rxjs";
 import primeiraLetraMaiuscula from "../../helpers/primeiraLetraMaiuscula";
@@ -45,7 +45,7 @@ export class PokemonPage implements OnInit {
   protected totalImages = 0;
   protected imageIndex = 0;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -89,7 +89,17 @@ export class PokemonPage implements OnInit {
           });
         });
 
+        console.log(this.evolutionChain);
+
         Object.values(this.pokemon.sprites.other['official-artwork']).forEach((img) => {
+          if (img && typeof img === 'string') this.pokemonImages.push(img);
+        });
+
+        Object.values(this.pokemon.sprites.other['dream_world']).forEach((img) => {
+          if (img && typeof img === 'string') this.pokemonImages.push(img);
+        });
+
+        Object.values(this.pokemon.sprites.other['home']).forEach((img) => {
           if (img && typeof img === 'string') this.pokemonImages.push(img);
         });
 
@@ -141,6 +151,12 @@ export class PokemonPage implements OnInit {
     const nextIndex = this.imageIndex + 1;
     this.pokemonImage = this.pokemonImages[this.imageIndex + 1];
     this.imageIndex = nextIndex;
+  }
+
+  showPokemon(url:string) {
+    const id = url.split('/').filter(Boolean).pop(); // "1"
+
+    this.router.navigate(['/pokemon', id]);
   }
 
   getAbilityEmIngles(habilidades:[]):any {
