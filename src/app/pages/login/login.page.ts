@@ -11,10 +11,11 @@ import {
 import { ErrorStateMatcher } from '@angular/material/core';
 import { IonicModule, NavController, ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
-import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
-import {MatInput, MatInputModule} from "@angular/material/input";
-import {MatCard, MatCardContent} from "@angular/material/card";
-import {RouterLink} from "@angular/router";
+import { MatFormField, MatFormFieldModule } from "@angular/material/form-field";
+import { MatInput, MatInputModule } from "@angular/material/input";
+import { MatCard, MatCardContent } from "@angular/material/card";
+import { RouterLink } from "@angular/router";
+import { MatButton, MatFabButton } from "@angular/material/button";
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -34,7 +35,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     MatInputModule,
     MatCard,
     MatCardContent,
-    RouterLink
+    RouterLink,
+    MatButton,
+    MatFabButton
   ]
 })
 export class LoginPage {

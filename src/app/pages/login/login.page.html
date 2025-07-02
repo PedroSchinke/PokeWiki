@@ -30,9 +30,7 @@
           >
         </mat-form-field>
 
-        <ion-button class="botao-entrar" expand="block" type="submit" [disabled]="loginForm.invalid">
-          Entrar
-        </ion-button>
+        <button class="botao-entrar" mat-fab [disabled]="loginForm.invalid">Entrar</button>
 
         <p [routerLink]="['/cadastrar']" class="botao-criar-conta">Criar conta</p>
       </form>
