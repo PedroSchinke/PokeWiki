@@ -15,7 +15,17 @@
     <mat-card *ngIf="pokemon" class="card" appearance="outlined">
       <div>
         <mat-card-header style="margin-bottom: 10px;">
-          <mat-card-title class="card-title">{{ primeiraLetraMaiuscula(pokemon.name) }}</mat-card-title>
+          <mat-card-title class="card-title">
+            <h1>{{ primeiraLetraMaiuscula(pokemon.name) }}</h1>
+
+            <mat-icon
+              title="Adicionar aos Favoritos"
+              class="material-icons-outlined icone-favorito"
+              (click)="toggleFavorito()"
+            >
+              star_outline
+            </mat-icon>
+          </mat-card-title>
 
           <mat-card-subtitle style="color: #fff">
             Espécie: {{ primeiraLetraMaiuscula(pokemon.species.name) }}

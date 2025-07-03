@@ -29,6 +29,7 @@ interface Type {
 export class PokemonPage implements OnInit {
   private id: string | null = null;
   private pokeApiUrl = environment.pokeApiURL;
+  private apiUrl = environment.apiURL;
   protected pokemon:any = {
     name: '',
     species: {
@@ -119,6 +120,13 @@ export class PokemonPage implements OnInit {
     this.http.get(url.slice(0, -1))
       .subscribe((data:any) => {
         this.abilities.push(data);
+      });
+  }
+
+  toggleFavorito() {
+    this.http.post(`${this.apiUrl}/favoritos`, { pokemon_id: this.id })
+      .subscribe((response) => {
+        return;
       });
   }
 
