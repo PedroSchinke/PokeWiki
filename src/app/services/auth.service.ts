@@ -1,32 +1,38 @@
-import { environment } from "../../environments/environment";
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from "../../environments/environment";
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = environment.apiURL;
+  private api = environment.apiURL;
 
   constructor(private http: HttpClient) {}
 
-  async login(email: string, password: string) {
-    const response = await this.http
-      .post(`${this.apiUrl}/login`, { email, password })
-      .subscribe((response:any) => {
-        if (response) {
-          localStorage.setItem('token', response.token);
-        }
-      });
+  login(credentials: { email: string, password: string }) {
+    return this.http.post(`${this.api}/api/login`, credentials);
+  }
 
-    return response;
+  register(data: { name: string, email: string, password: string }) {
+    return this.http.post(`${this.api}/api/register`, data);
+  }
+
+  me() {
+    return this.http.get(`${this.api}/api/user`);
   }
 
   logout() {
-    localStorage.removeItem('token');
+    return this.http.post(`${this.api}/api/logout`, {});
   }
 
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+  saveToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  removeToken() {
+    localStorage.removeItem('token');
   }
 }
