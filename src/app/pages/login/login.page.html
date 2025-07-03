@@ -9,14 +9,16 @@
     <mat-card-content>
       <h1 class="card-title">Acesse sua conta</h1>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <form (ngSubmit)="onLogin()">
         <mat-form-field class="example-full-width">
           <mat-label>Email</mat-label>
 
           <input
             type="email"
             matInput
-            [formControl]="emailFormControl"
+            name="email"
+            id="email"
+            [(ngModel)]="email"
           >
         </mat-form-field>
 
@@ -26,11 +28,19 @@
           <input
             type="password"
             matInput
-            [formControl]="emailFormControl"
+            name="senha"
+            id="senha"
+            [(ngModel)]="senha"
           >
         </mat-form-field>
 
-        <button class="botao-entrar" mat-fab [disabled]="loginForm.invalid">Entrar</button>
+        <button
+          class="botao-entrar"
+          type="submit"
+          mat-fab
+        >
+          Entrar
+        </button>
 
         <p [routerLink]="['/cadastrar']" class="botao-criar-conta">Criar conta</p>
       </form>
