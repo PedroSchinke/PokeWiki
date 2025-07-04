@@ -1,0 +1,37 @@
+.tool-bar {
+  height: 75px;
+  display: flex;
+}
+
+.header-content {
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  width: fit-content;
+  margin: 0;
+  padding: 0;
+  font-family: "Quicksand", sans-serif;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.user-menu-button {
+  background: transparent;
+}
+
+.icone-user {
+  width: fit-content;
+  height: fit-content;
+  background: transparent;
+  font-size: 2rem;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.icone-user:hover {
+  color: #ccc;
+}

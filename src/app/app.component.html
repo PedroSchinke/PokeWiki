@@ -1,3 +1,31 @@
 <ion-app>
+  <ion-header>
+    <ion-toolbar class="tool-bar">
+      <div class="header-content">
+        <h1 class="title" [routerLink]="['/home']">PokeWiki</h1>
+
+        <button matIconButton [matMenuTriggerFor]="menu" class="user-menu-button">
+          <mat-icon title="Opções de usuário" class="material-icons-outlined icone-user">
+            person
+          </mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button [routerLink]="['/user']" mat-menu-item>
+            <mat-icon>account_circle</mat-icon>
+
+            <span>Meu Perfil</span>
+          </button>
+
+          <button (click)="logout()" mat-menu-item>
+            <mat-icon>logout</mat-icon>
+
+            <span>Sair</span>
+          </button>
+        </mat-menu>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
   <ion-router-outlet></ion-router-outlet>
 </ion-app>
