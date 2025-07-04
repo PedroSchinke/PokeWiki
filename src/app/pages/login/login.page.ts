@@ -40,6 +40,8 @@ export class LoginPage {
     this.authService.login(params).subscribe({
       next: (res: any) => {
         this.authService.saveToken(res.access_token);
+        this.authService.saveUser(res.user);
+
         this.router.navigate(['/home']);
       },
       error: err => {
