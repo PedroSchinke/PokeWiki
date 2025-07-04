@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from "../../../environments/environment";
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from "rxjs";
 import primeiraLetraMaiuscula from "../../helpers/primeiraLetraMaiuscula";
+import { AuthService } from "../../services/auth.service";
 
 interface Pokemon {
   name: string;
@@ -27,9 +28,10 @@ interface Type {
   standalone: false
 })
 export class PokemonPage implements OnInit {
-  private id: string | null = null;
+  private id = '0';
   private pokeApiUrl = environment.pokeApiURL;
   private apiUrl = environment.apiURL;
+  protected isFavorito = false;
   protected pokemon:any = {
     name: '',
     species: {
@@ -46,10 +48,16 @@ export class PokemonPage implements OnInit {
   protected totalImages = 0;
   protected imageIndex = 0;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.id = this.route.snapshot.paramMap.get('id') ?? '0';
+    this.isFavorito = this.authService.getFavoritePokemonIds().includes(parseInt(this.id));
 
     this.getPokemon();
   }
@@ -124,9 +132,21 @@ export class PokemonPage implements OnInit {
   }
 
   toggleFavorito() {
-    this.http.post(`${this.apiUrl}/favoritos`, { pokemon_id: this.id })
-      .subscribe((response) => {
-        return;
+    const originalState = this.isFavorito;
+
+    this.isFavorito = !this.isFavorito;
+
+    this.http.post(`${this.apiUrl}/api/favoritos`, { pokemon_id: this.id })
+      .subscribe({
+        next: () => {
+          console.log('Favorito atualizado');
+          this.authService.toggleFavoritePokemon(parseInt(this.id));
+        },
+        error: (err) => {
+          this.isFavorito = originalState;
+
+          alert('Ocorreu um erro ao tentar favoritar. Tente novamente.');
+        }
       });
   }
 
