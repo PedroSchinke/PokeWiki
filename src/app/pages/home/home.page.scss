@@ -42,11 +42,13 @@
 }
 
 .introducao-container h1 {
+  font-family: 'Quicksand', sans-serif;
   font-size: 3.625rem;
   font-weight: 900;
 }
 
 .introducao-container h3 {
+  font-family: 'Inter', sans-serif;
   margin-top: 0;
   color: #9b9b9b;
 }
@@ -79,6 +81,6 @@ ion-card:hover {
 
 .paginator {
   width: 78%;
-  border-radius: 10px;
-  background: #b6b6b6
+  border-radius: 20px;
+  background: #f3f3f3;
 }
