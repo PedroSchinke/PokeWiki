@@ -1,0 +1,39 @@
+<ion-content [fullscreen]="true">
+  <main>
+    <mat-card class="card" appearance="outlined">
+      <div>
+        <mat-card-header style="margin-bottom: 10px;">
+          <mat-card-title class="card-title">
+            <mat-icon>account_circle</mat-icon>
+
+            <h1>Meus Dados</h1>
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content class="infos-container">
+          <span>Nome:</span>
+          <strong>{{ nome }}</strong>
+
+          <span style="margin-top: 5px;">Email:</span>
+          <strong>{{ email }}</strong>
+        </mat-card-content>
+      </div>
+    </mat-card>
+
+    <mat-card class="card favoritos-card" appearance="outlined">
+      <div>
+        <mat-card-header style="margin-bottom: 10px;">
+          <mat-card-title class="card-title">
+            <mat-icon>star</mat-icon>
+
+            <h1>Pokémons Favoritos</h1>
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content class="infos-container">
+          <p *ngIf="favoritos.length === 0">Você não tem nenhum Pokémon favorito :(</p>
+        </mat-card-content>
+      </div>
+    </mat-card>
+  </main>
+</ion-content>

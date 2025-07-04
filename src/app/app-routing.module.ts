@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'cadastrar',
     loadChildren: () => import('./pages/cadastrar/cadastrar.module').then(m => m.CadastrarPageModule)
   },
+  {
+    path: 'user',
+    loadChildren: () => import('./pages/user/user.module').then(m => m.UserPageModule)
+  },
 ];
 
 @NgModule({
