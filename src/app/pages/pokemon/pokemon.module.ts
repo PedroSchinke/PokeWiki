@@ -15,26 +15,28 @@ import {
 import { MatChip } from "@angular/material/chips";
 import { MatIcon, MatIconModule } from "@angular/material/icon";
 import { MatFabButton } from "@angular/material/button";
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    PokemonPageRoutingModule,
-    MatCard,
-    MatCardHeader,
-    MatCardContent,
-    MatChip,
-    MatCardImage,
-    MatCardTitle,
-    MatCardSubtitle,
-    NgOptimizedImage,
-    MatIcon,
-    MatFabButton,
-    MatIconModule,
-    MatCardActions
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        PokemonPageRoutingModule,
+        MatCard,
+        MatCardHeader,
+        MatCardContent,
+        MatChip,
+        MatCardImage,
+        MatCardTitle,
+        MatCardSubtitle,
+        NgOptimizedImage,
+        MatIcon,
+        MatFabButton,
+        MatIconModule,
+        MatCardActions,
+        MatProgressSpinner
+    ],
   declarations: [PokemonPage]
 })
 export class PokemonPageModule {}
