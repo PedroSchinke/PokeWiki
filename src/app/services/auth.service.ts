@@ -29,6 +29,7 @@ export class AuthService {
     }).subscribe({
       next: () => {
         this.removeToken();
+        this.removeUserData();
 
         this.router.navigate(['/login']);
       },
@@ -38,12 +39,19 @@ export class AuthService {
     });
   }
 
+  isAuthenticated(): boolean {
+    const token = this.getToken();
+
+    return !!token;
+  }
+
   saveToken(token: string) {
     localStorage.setItem('token', token);
   }
 
-  saveUser(user: any) {
+  saveUserData({ user, favorites }: any) {
     localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('favorites', JSON.stringify(favorites));
   }
 
   getToken(): string | null {
@@ -54,16 +62,22 @@ export class AuthService {
     localStorage.removeItem('token');
   }
 
+  removeUserData() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('favorites');
+  }
+
   getUser(): any {
     const data = localStorage.getItem('user');
     return data ? JSON.parse(data) : null;
   }
 
-  getFavoritePokemonIds(): number[] {
-    return this.getUser()?.favorites || [];
+  getFavoritePokemonIds(): any {
+    const data = localStorage.getItem('favorites');
+    return data ? JSON.parse(data) : [];
   }
 
   toggleFavoritePokemon(pokemonId: number) {
-    console.log(localStorage.getItem('user'))
+    console.log(localStorage.getItem('user.favorites'))
   }
 }

@@ -6,7 +6,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatCard, MatCardContent } from "@angular/material/card";
 import { Router, RouterLink } from "@angular/router";
-import { MatButton, MatFabButton } from "@angular/material/button";
+import { MatFabButton } from "@angular/material/button";
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,6 @@ import { MatButton, MatFabButton } from "@angular/material/button";
     MatInputModule,
     MatCard,
     MatCardContent,
-    MatButton,
     MatFabButton,
     RouterLink,
     FormsModule
@@ -40,7 +39,7 @@ export class LoginPage {
     this.authService.login(params).subscribe({
       next: (res: any) => {
         this.authService.saveToken(res.access_token);
-        this.authService.saveUser(res.user);
+        this.authService.saveUserData({ user: res.user, favorites: res.favorites });
 
         this.router.navigate(['/home']);
       },
