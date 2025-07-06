@@ -1,6 +1,8 @@
 <ion-content [fullscreen]="true" class="main">
   <main>
-    <mat-card *ngIf="pokemon" class="card" appearance="outlined">
+    <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
+
+    <mat-card *ngIf="pokemon && !loading" class="card" appearance="outlined">
       <div>
         <mat-card-header style="margin-bottom: 10px;">
           <mat-card-title class="card-title">
@@ -16,7 +18,7 @@
             </mat-icon>
           </mat-card-title>
 
-          <mat-card-subtitle style="color: #fff">
+          <mat-card-subtitle class="card-subtitle">
             Espécie: {{ primeiraLetraMaiuscula(pokemon.species.name) }}
           </mat-card-subtitle>
         </mat-card-header>
@@ -30,8 +32,6 @@
             <p><strong>Altura: </strong>{{ pokemon.height }}</p>
             <p><strong>Peso: </strong>{{ pokemon.weight }}</p>
             <p><strong>XP Base: </strong>{{ pokemon.base_experience }}</p>
-
-            <hr class="divisor" />
 
             <div class="habilidades-section">
               <h2>Habilidades:</h2>
@@ -63,8 +63,6 @@
             </button>
           </div>
         </mat-card-content>
-
-        <hr class="divisor" style="margin: 12px 15px;" />
 
         <mat-card-actions class="evolucoes-container">
           <h2>Cadeia de Evolução:</h2>

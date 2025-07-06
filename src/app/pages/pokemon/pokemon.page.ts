@@ -3,8 +3,9 @@ import { environment } from "../../../environments/environment";
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from "rxjs";
-import primeiraLetraMaiuscula from "../../helpers/primeiraLetraMaiuscula";
 import { AuthService } from "../../services/auth.service";
+import { FavoritosService } from "../../services/favoritos.service";
+import primeiraLetraMaiuscula from "../../helpers/primeiraLetraMaiuscula";
 
 interface Pokemon {
   name: string;
@@ -31,6 +32,7 @@ export class PokemonPage implements OnInit {
   private id = '0';
   private pokeApiUrl = environment.pokeApiURL;
   private apiUrl = environment.apiURL;
+  protected loading = false;
   protected isFavorito = false;
   protected pokemon:any = {
     name: '',
@@ -52,95 +54,122 @@ export class PokemonPage implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private favoritosService: FavoritosService
   ) {}
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id') ?? '0';
-    this.isFavorito = this.authService.getFavoritePokemonIds().includes(parseInt(this.id));
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
 
-    this.getPokemon();
+      if (id) {
+        this.id = id;
+
+        this.limparDados();
+        this.getPokemon();
+
+        this.isFavorito = this.authService.getFavoritePokemonIds().includes(parseInt(this.id));
+      }
+    });
   }
 
   async getPokemon() {
+    this.loading = true;
+
     this.http.get(`${this.pokeApiUrl}/pokemon/${this.id}`)
       .subscribe((data: any) => {
-        console.log(data);
         this.pokemon = data;
 
-        const abilityRequests = this.pokemon.abilities.map((ability:any) =>
-          this.http.get(ability.ability.url)
-        );
+        this.getAbilities();
 
-        forkJoin(abilityRequests).subscribe((data:any) => {
-          this.abilities = data;
-        });
+        this.getEvolutionChain();
 
-        this.http.get(this.pokemon.species.url).subscribe((data:any) => {
-          this.species = data;
-
-          this.http.get(this.species.evolution_chain.url).subscribe((data:any) => {
-            const primeiraEvolucao = data.chain.species;
-
-            this.evolutionChain.push({ url: primeiraEvolucao.url, name: primeiraEvolucao.name });
-
-            if (data.chain.evolves_to.length > 0) {
-              const segundaEvolucao = data.chain.evolves_to[0].species;
-
-              this.evolutionChain.push({ url: segundaEvolucao.url, name: segundaEvolucao.name });
-
-              if (data.chain.evolves_to[0].evolves_to.length > 0) {
-                const terceiraEvolucao = data.chain.evolves_to[0].evolves_to[0].species;
-
-                this.evolutionChain.push({ url: terceiraEvolucao.url, name: terceiraEvolucao.name });
-              }
-            }
-          });
-        });
-
-        console.log(this.evolutionChain);
-
-        Object.values(this.pokemon.sprites.other['official-artwork']).forEach((img) => {
-          if (img && typeof img === 'string') this.pokemonImages.push(img);
-        });
-
-        Object.values(this.pokemon.sprites.other['dream_world']).forEach((img) => {
-          if (img && typeof img === 'string') this.pokemonImages.push(img);
-        });
-
-        Object.values(this.pokemon.sprites.other['home']).forEach((img) => {
-          if (img && typeof img === 'string') this.pokemonImages.push(img);
-        });
-
-        Object.values(this.pokemon.sprites).forEach((img) => {
-          if (img && typeof img === 'string') this.pokemonImages.push(img);
-        });
-
-        this.totalImages = this.pokemonImages.length;
-
-        if (this.pokemonImages.length > 0) {
-          this.pokemonImage = this.pokemonImages[0];
-        }
+        this.getImages();
       });
   }
 
-  getAbilities(url:string) {
-    this.http.get(url.slice(0, -1))
-      .subscribe((data:any) => {
-        this.abilities.push(data);
+  getAbilities() {
+    const abilityRequests = this.pokemon.abilities.map((ability:any) =>
+      this.http.get(ability.ability.url)
+    );
+
+    forkJoin(abilityRequests).subscribe((data:any) => {
+      this.abilities = data;
+    });
+  }
+
+  getEvolutionChain() {
+    this.http.get(this.pokemon.species.url).subscribe((data:any) => {
+      this.species = data;
+
+      this.http.get(this.species.evolution_chain.url).subscribe((data:any) => {
+        const primeiraEvolucao = data.chain.species;
+
+        this.evolutionChain.push({ url: primeiraEvolucao.url, name: primeiraEvolucao.name });
+
+        if (data.chain.evolves_to.length > 0) {
+          const segundaEvolucao = data.chain.evolves_to[0].species;
+
+          this.evolutionChain.push({ url: segundaEvolucao.url, name: segundaEvolucao.name });
+
+          if (data.chain.evolves_to[0].evolves_to.length > 0) {
+            const terceiraEvolucao = data.chain.evolves_to[0].evolves_to[0].species;
+
+            this.evolutionChain.push({ url: terceiraEvolucao.url, name: terceiraEvolucao.name });
+          }
+        }
+
+        this.loading = false;
       });
+    });
+  }
+
+  getImages() {
+    Object.values(this.pokemon.sprites.other['official-artwork']).forEach((img) => {
+      if (img && typeof img === 'string') this.pokemonImages.push(img);
+    });
+
+    Object.values(this.pokemon.sprites.other['dream_world']).forEach((img) => {
+      if (img && typeof img === 'string') this.pokemonImages.push(img);
+    });
+
+    Object.values(this.pokemon.sprites.other['home']).forEach((img) => {
+      if (img && typeof img === 'string') this.pokemonImages.push(img);
+    });
+
+    Object.values(this.pokemon.sprites).forEach((img) => {
+      if (img && typeof img === 'string') this.pokemonImages.push(img);
+    });
+
+    this.totalImages = this.pokemonImages.length;
+
+    if (this.pokemonImages.length > 0) {
+      this.pokemonImage = this.pokemonImages[0];
+    }
   }
 
   toggleFavorito() {
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+
+      return;
+    }
+
     const originalState = this.isFavorito;
 
     this.isFavorito = !this.isFavorito;
 
-    this.http.post(`${this.apiUrl}/api/favoritos`, { pokemon_id: this.id })
-      .subscribe({
+    this.http.post(
+      `${this.apiUrl}/api/favoritos`,
+      { pokemon_id: this.id },
+      {
+        headers: {
+          Authorization: `Bearer ${this.authService.getToken()}`
+        }
+      }
+    ).subscribe({
         next: () => {
-          console.log('Favorito atualizado');
-          this.authService.toggleFavoritePokemon(parseInt(this.id));
+          this.favoritosService.toggle(parseInt(this.id));
         },
         error: (err) => {
           this.isFavorito = originalState;
@@ -182,7 +211,7 @@ export class PokemonPage implements OnInit {
   }
 
   showPokemon(url:string) {
-    const id = url.split('/').filter(Boolean).pop(); // "1"
+    const id = url.split('/').filter(Boolean).pop();
 
     this.router.navigate(['/pokemon', id]);
   }
@@ -191,6 +220,24 @@ export class PokemonPage implements OnInit {
     return habilidades.find((hab:any) => {
       return hab.language.name === 'en';
     });
+  }
+
+  limparDados() {
+    this.pokemon = {
+      name: '',
+      species: {
+        name: ''
+      },
+      types: [],
+      sprites: {}
+    };
+    this.species = [];
+    this.evolutionChain = [];
+    this.abilities = [];
+    this.pokemonImages = [];
+    this.pokemonImage = null;
+    this.totalImages = 0;
+    this.imageIndex = 0;
   }
 
   protected readonly primeiraLetraMaiuscula = primeiraLetraMaiuscula;
