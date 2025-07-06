@@ -70,3 +70,36 @@ main {
   background: #6e6e6e;
   border: none;
 }
+
+.pokemons-favoritos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, auto));
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pokemon-card {
+  width: 100%;
+  gap: 5px;
+  background: #282828;
+  transition: 0.5s ease;
+  cursor: pointer;
+}
+
+.pokemon-card:hover {
+  transform: scale(1.01);
+}
+
+.pokemon-title {
+  margin-left: 8px;
+  font-size: 1.3rem;
+  font-family: "Quicksand", sans-serif;
+}
+
+.image {
+  position: relative !important;
+  width: 300px !important;
+  min-width: 100%;
+  height: auto;
+  aspect-ratio: 10 / 10;
+}

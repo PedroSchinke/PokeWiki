@@ -31,7 +31,29 @@
         </mat-card-header>
 
         <mat-card-content class="infos-container">
-          <p *ngIf="favoritos.length === 0">Você não tem nenhum Pokémon favorito :(</p>
+          <p *ngIf="favoritosIds.length === 0">Você não tem nenhum Pokémon favorito :(</p>
+
+          <div class="pokemons-favoritos-container">
+            <mat-card
+              *ngFor="let pokemon of pokemonsFavoritos"
+              class="card pokemon-card"
+              [routerLink]="[`/pokemon/${pokemon.id}`]"
+            >
+              <mat-card-title>
+                <span class="pokemon-title">{{ primeiraLetraMaiuscula(pokemon.name) }}</span>
+              </mat-card-title>
+
+              <img
+                priority
+                *ngIf="pokemon.sprites.other['official-artwork'].front_default"
+                mat-card-image
+                [ngSrc]="pokemon.sprites.other['official-artwork'].front_default"
+                [alt]="'Image of ' + pokemon.name"
+                class="image"
+                fill
+              >
+            </mat-card>
+          </div>
         </mat-card-content>
       </div>
     </mat-card>
