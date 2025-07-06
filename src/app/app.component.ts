@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
   standalone: false,
 })
 export class AppComponent {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(protected authService: AuthService, private router: Router) {}
 
   logout() {
     this.authService.logout();

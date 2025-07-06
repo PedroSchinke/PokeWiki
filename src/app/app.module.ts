@@ -16,6 +16,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCardModule, MatCardTitle } from "@angular/material/card";
 import { MatIcon } from "@angular/material/icon";
 import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,7 +33,8 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
     MatIcon,
     MatMenu,
     MatMenuTrigger,
-    MatMenuItem
+    MatMenuItem,
+    MatProgressSpinner
   ],
   providers: [
     {

@@ -23,6 +23,21 @@
   background: transparent;
 }
 
+.login-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  font-family: 'Quicksand', 'sans-serif';
+  font-size: 1rem;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  color: #ccc;
+}
+
 .icone-user {
   width: fit-content;
   height: fit-content;
