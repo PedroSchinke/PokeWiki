@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from "./guards/auth.guard";
+import { GuestGuard } from "./guards/guest.guard";
 
 const routes: Routes = [
   {
@@ -16,20 +18,19 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'pokemon',
-    loadChildren: () => import('./pages/pokemon/pokemon.module').then(m => m.PokemonPageModule)
-  },
-  {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule),
+    canActivate: [GuestGuard]
   },
   {
     path: 'cadastrar',
-    loadChildren: () => import('./pages/cadastrar/cadastrar.module').then(m => m.CadastrarPageModule)
+    loadChildren: () => import('./pages/cadastrar/cadastrar.module').then(m => m.CadastrarPageModule),
+    canActivate: [GuestGuard]
   },
   {
     path: 'user',
-    loadChildren: () => import('./pages/user/user.module').then(m => m.UserPageModule)
+    loadChildren: () => import('./pages/user/user.module').then(m => m.UserPageModule),
+    canActivate: [AuthGuard]
   },
 ];
 
