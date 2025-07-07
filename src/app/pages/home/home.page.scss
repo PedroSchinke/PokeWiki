@@ -53,6 +53,10 @@
   color: #9b9b9b;
 }
 
+.spinner {
+  margin-top: 150px;
+}
+
 .pokemon-cards-container {
   width: 80%;
   display: grid;
@@ -66,21 +70,46 @@
   align-items: center;
 }
 
+.image-and-name-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.image {
+  position: relative !important;
+  width: 70px !important;
+  height: 70px !important;
+}
+
+.pokemon-name {
+  font-family: "Quicksand", sans-serif;
+  font-weight: 900;
+}
+
 ion-searchbar {
   --border-radius: 20px;
 }
 
 ion-card {
-  cursor: pointer;
+  height: fit-content;
+  margin: 5px;
+  border-radius: 20px;
   transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
 ion-card:hover {
   transform: scale(1.02);
 }
 
+ion-card-header {
+  padding: 10px;
+}
+
 .paginator {
-  width: 78%;
+  margin-top: 7px;
+  width: 79%;
   border-radius: 20px;
   background: #f3f3f3;
 }

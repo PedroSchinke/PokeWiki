@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 import { MatPaginator } from "@angular/material/paginator";
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { MatCardImage } from "@angular/material/card";
 
 @NgModule({
   imports: [
@@ -12,7 +14,10 @@ import { MatPaginator } from "@angular/material/paginator";
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    MatPaginator
+    MatPaginator,
+    MatProgressSpinner,
+    MatCardImage,
+    NgOptimizedImage
   ],
   declarations: [HomePage]
 })

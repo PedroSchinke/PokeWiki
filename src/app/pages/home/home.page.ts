@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from "../../../environments/environment";
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { forkJoin } from "rxjs";
 import primeiraLetraMaiuscula from '../../helpers/primeiraLetraMaiuscula';
 
 interface Pokemon {
   name: string;
   url: string;
+  image: string;
 }
 
 @Component({
@@ -17,6 +19,7 @@ interface Pokemon {
 })
 export class HomePage implements OnInit {
   private pokeApiUrl = environment.pokeApiURL;
+  protected loading = false;
   protected pokemons:Pokemon[] = [];
   protected pokemonsExibidos:Pokemon[] = [];
   protected filtro = '';
@@ -41,16 +44,45 @@ export class HomePage implements OnInit {
     this.total = resultado.length;
 
     this.pokemonsExibidos = resultado.slice(this.offset, this.perPage);
+
+    this.handlePokemonImages();
   }
 
   async getPokemons() {
+    this.loading = true;
+
     this.http
       .get(`${this.pokeApiUrl}/pokemon?limit=2000&offset=0`)
       .subscribe((data: any) => {
         this.pokemons = data.results;
-        this.pokemonsExibidos = this.pokemons.slice(this.offset, this.perPage);
+        this.pokemonsExibidos = this.pokemons.slice(this.offset, this.offset + this.perPage);
         this.total = data.count;
+
+        this.handlePokemonImages();
+
+        this.loading = false;
       });
+  }
+
+  handlePokemonImages() {
+    this.loading = true;
+
+    const pokemonRequests = this.pokemonsExibidos.map((pokemon: any) =>
+      this.http.get(pokemon.url)
+    );
+
+    forkJoin(pokemonRequests).subscribe((responses: any[]) => {
+      this.pokemonsExibidos = this.pokemonsExibidos.map((pokemon, index) => {
+        const response = responses[index];
+
+        return {
+          ...pokemon,
+          image: response.sprites?.other?.['official-artwork']?.front_default ?? null
+        };
+      });
+
+      this.loading = false;
+    });
   }
 
   handlePageEvent(event:any) {
@@ -62,10 +94,12 @@ export class HomePage implements OnInit {
     );
 
     this.pokemonsExibidos = resultado.slice(this.offset, this.offset + this.perPage);
+
+    this.handlePokemonImages();
   }
 
   showPokemon(url:string) {
-    const id = url.split('/').filter(Boolean).pop(); // "1"
+    const id = url.split('/').filter(Boolean).pop();
 
     this.router.navigate(['/pokemon', id]);
   }
