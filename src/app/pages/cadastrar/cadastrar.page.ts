@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicModule } from "@ionic/angular";
 import { FormsModule } from "@angular/forms";
-import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { MatCard, MatCardContent } from "@angular/material/card";
 import { MatFabButton } from "@angular/material/button";
@@ -35,7 +34,7 @@ export class CadastrarPage {
   protected alertaVisivel:boolean = false;
   protected alertaMensagem = '';
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   async cadastrarUsuario() {
     if (!this.nome || !this.email || !this.senha || !this.senhaConfirmada) {
