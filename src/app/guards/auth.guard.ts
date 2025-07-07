@@ -23,17 +23,14 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree
   {
-    console.log('1')
     if (this.authService.isAuthenticated() && next.routeConfig?.path === 'login') {
       return this.router.createUrlTree(['/home']);
     }
 
-    console.log('2')
     if (this.authService.isAuthenticated() && next.routeConfig?.path === 'cadastrar') {
       return this.router.createUrlTree(['/home']);
     }
 
-    console.log('3')
     if (this.authService.isAuthenticated()) {
       return true;
     }
