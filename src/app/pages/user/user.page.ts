@@ -7,12 +7,11 @@ import {
   MatCardTitle
 } from "@angular/material/card";
 import { MatIcon } from "@angular/material/icon";
-import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import { NgForOf, NgIf, NgOptimizedImage } from "@angular/common";
+import { PokemonService } from "../../services/pokemon.service";
 import { AuthService } from "../../services/auth.service";
+import { RouterLink } from "@angular/router";
 import primeiraLetraMaiuscula from "../../helpers/primeiraLetraMaiuscula";
-import { HttpClient } from "@angular/common/http";
-import {environment} from "../../../environments/environment";
-import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-user',
@@ -33,13 +32,12 @@ import {RouterLink} from "@angular/router";
   ]
 })
 export class UserPage implements OnInit {
-  private pokeApiUrl = environment.pokeApiURL;
   protected nome = '';
   protected email = '';
   protected favoritosIds = [];
   protected pokemonsFavoritos: any = [];
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private pokemonService: PokemonService, private authService: AuthService) { }
 
   ngOnInit() {
     const user = this.authService.getUser();
@@ -54,7 +52,7 @@ export class UserPage implements OnInit {
 
   getPokemonsFavoritos() {
     this.favoritosIds.forEach((id) => {
-      this.http.get(`${this.pokeApiUrl}/pokemon/${id}`)
+      this.pokemonService.getPokemon(id)
         .subscribe((response) => {
           this.pokemonsFavoritos.push(response);
         });

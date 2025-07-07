@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from "../../../environments/environment";
-import { HttpClient } from '@angular/common/http';
+import { PokemonService } from "../../services/pokemon.service";
 import { Router } from '@angular/router';
 import { forkJoin } from "rxjs";
+import getIdFromUrl from "../../helpers/getIdFromUrl";
 import primeiraLetraMaiuscula from '../../helpers/primeiraLetraMaiuscula';
 
 interface Pokemon {
@@ -18,7 +18,6 @@ interface Pokemon {
   standalone: false,
 })
 export class HomePage implements OnInit {
-  private pokeApiUrl = environment.pokeApiURL;
   protected loading = false;
   protected pokemons:Pokemon[] = [];
   protected pokemonsExibidos:Pokemon[] = [];
@@ -28,7 +27,7 @@ export class HomePage implements OnInit {
   protected total = 0;
   protected offset = 0;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private pokemonService: PokemonService, private router: Router) {}
 
   ngOnInit() {
     this.getPokemons();
@@ -51,8 +50,7 @@ export class HomePage implements OnInit {
   async getPokemons() {
     this.loading = true;
 
-    this.http
-      .get(`${this.pokeApiUrl}/pokemon?limit=2000&offset=0`)
+    this.pokemonService.getPokemonsList(2000, 0)
       .subscribe((data: any) => {
         this.pokemons = data.results;
         this.pokemonsExibidos = this.pokemons.slice(this.offset, this.offset + this.perPage);
@@ -67,9 +65,15 @@ export class HomePage implements OnInit {
   handlePokemonImages() {
     this.loading = true;
 
-    const pokemonRequests = this.pokemonsExibidos.map((pokemon: any) =>
-      this.http.get(pokemon.url)
-    );
+    const pokemonRequests = this.pokemonsExibidos.map((pokemon: any) => {
+      const id = getIdFromUrl(pokemon.url);
+
+      if (id) {
+        return this.pokemonService.getPokemon(id);
+      }
+
+      return null;
+    });
 
     forkJoin(pokemonRequests).subscribe((responses: any[]) => {
       this.pokemonsExibidos = this.pokemonsExibidos.map((pokemon, index) => {
@@ -99,7 +103,7 @@ export class HomePage implements OnInit {
   }
 
   showPokemon(url:string) {
-    const id = url.split('/').filter(Boolean).pop();
+    const id = getIdFromUrl(url);
 
     this.router.navigate(['/pokemon', id]);
   }

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from "../../../environments/environment";
+import { PokemonService } from "../../services/pokemon.service";
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { forkJoin } from "rxjs";
 import { AuthService } from "../../services/auth.service";
 import { FavoritosService } from "../../services/favoritos.service";
+import getIdFromUrl from "../../helpers/getIdFromUrl";
 import primeiraLetraMaiuscula from "../../helpers/primeiraLetraMaiuscula";
 
 interface Pokemon {
@@ -30,8 +30,6 @@ interface Type {
 })
 export class PokemonPage implements OnInit {
   private id = '0';
-  private pokeApiUrl = environment.pokeApiURL;
-  private apiUrl = environment.apiURL;
   protected loading = false;
   protected isFavorito = false;
   protected pokemon:any = {
@@ -51,8 +49,8 @@ export class PokemonPage implements OnInit {
   protected imageIndex = 0;
 
   constructor(
+    private pokemonService: PokemonService,
     private route: ActivatedRoute,
-    private http: HttpClient,
     private router: Router,
     private authService: AuthService,
     private favoritosService: FavoritosService
@@ -76,7 +74,7 @@ export class PokemonPage implements OnInit {
   async getPokemon() {
     this.loading = true;
 
-    this.http.get(`${this.pokeApiUrl}/pokemon/${this.id}`)
+    this.pokemonService.getPokemon(this.id)
       .subscribe((data: any) => {
         this.pokemon = data;
 
@@ -89,9 +87,15 @@ export class PokemonPage implements OnInit {
   }
 
   getAbilities() {
-    const abilityRequests = this.pokemon.abilities.map((ability:any) =>
-      this.http.get(ability.ability.url)
-    );
+    const abilityRequests = this.pokemon.abilities.map((ability:any) => {
+      const id = getIdFromUrl(ability.ability.url);
+
+      if (id) {
+        return this.pokemonService.getAbility(id);
+      }
+
+      return null;
+    });
 
     forkJoin(abilityRequests).subscribe((data:any) => {
       this.abilities = data;
@@ -99,29 +103,37 @@ export class PokemonPage implements OnInit {
   }
 
   getEvolutionChain() {
-    this.http.get(this.pokemon.species.url).subscribe((data:any) => {
-      this.species = data;
+    const id = getIdFromUrl(this.pokemon.species.url);
 
-      this.http.get(this.species.evolution_chain.url).subscribe((data:any) => {
-        const primeiraEvolucao = data.chain.species;
+    if (id) {
+      this.pokemonService.getSpecies(id).subscribe((data:any) => {
+        this.species = data;
 
-        this.evolutionChain.push({ url: primeiraEvolucao.url, name: primeiraEvolucao.name });
+        const evolutionChainId = getIdFromUrl(this.species.evolution_chain.url);
 
-        if (data.chain.evolves_to.length > 0) {
-          const segundaEvolucao = data.chain.evolves_to[0].species;
+        if (evolutionChainId) {
+          this.pokemonService.getEvolutionChain(evolutionChainId).subscribe((data:any) => {
+            const primeiraEvolucao = data.chain.species;
 
-          this.evolutionChain.push({ url: segundaEvolucao.url, name: segundaEvolucao.name });
+            this.evolutionChain.push({ url: primeiraEvolucao.url, name: primeiraEvolucao.name });
 
-          if (data.chain.evolves_to[0].evolves_to.length > 0) {
-            const terceiraEvolucao = data.chain.evolves_to[0].evolves_to[0].species;
+            if (data.chain.evolves_to.length > 0) {
+              const segundaEvolucao = data.chain.evolves_to[0].species;
 
-            this.evolutionChain.push({ url: terceiraEvolucao.url, name: terceiraEvolucao.name });
-          }
+              this.evolutionChain.push({ url: segundaEvolucao.url, name: segundaEvolucao.name });
+
+              if (data.chain.evolves_to[0].evolves_to.length > 0) {
+                const terceiraEvolucao = data.chain.evolves_to[0].evolves_to[0].species;
+
+                this.evolutionChain.push({ url: terceiraEvolucao.url, name: terceiraEvolucao.name });
+              }
+            }
+
+            this.loading = false;
+          });
         }
-
-        this.loading = false;
       });
-    });
+    }
   }
 
   getImages() {
@@ -159,24 +171,16 @@ export class PokemonPage implements OnInit {
 
     this.isFavorito = !this.isFavorito;
 
-    this.http.post(
-      `${this.apiUrl}/api/favoritos`,
-      { pokemon_id: this.id },
-      {
-        headers: {
-          Authorization: `Bearer ${this.authService.getToken()}`
-        }
-      }
-    ).subscribe({
-        next: () => {
-          this.favoritosService.toggle(parseInt(this.id));
-        },
-        error: (err) => {
-          this.isFavorito = originalState;
+    this.pokemonService.toggleFavorito(this.id).subscribe({
+      next: () => {
+        this.favoritosService.toggle(parseInt(this.id));
+      },
+      error: (err) => {
+        this.isFavorito = originalState;
 
-          alert('Ocorreu um erro ao tentar favoritar. Tente novamente.');
-        }
-      });
+        alert('Ocorreu um erro ao tentar favoritar. Tente novamente.');
+      }
+    });
   }
 
   previousImage() {
@@ -211,7 +215,7 @@ export class PokemonPage implements OnInit {
   }
 
   showPokemon(url:string) {
-    const id = url.split('/').filter(Boolean).pop();
+    const id = getIdFromUrl(url);
 
     this.router.navigate(['/pokemon', id]);
   }
