@@ -57,8 +57,6 @@ export class HomePage implements OnInit {
         this.total = data.count;
 
         this.handlePokemonImages();
-
-        this.loading = false;
       });
   }
 

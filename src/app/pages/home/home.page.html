@@ -5,8 +5,6 @@
       <h3>Sua enciclopédia Pokémon</h3>
     </div>
 
-    <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
-
     <ion-searchbar
       placeholder="Pesquisar Pokémon"
       color="light"
@@ -14,6 +12,8 @@
       style="width: 80%;"
       (ionInput)="filter($event)"
     ></ion-searchbar>
+
+    <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
 
     <section *ngIf="pokemons.length > 0 && !loading" class="pokemon-cards-container">
       <ion-card *ngFor="let pokemon of pokemonsExibidos" (click)="showPokemon(pokemon.url)">
