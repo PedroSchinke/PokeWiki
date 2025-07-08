@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicModule } from "@ionic/angular";
 import {
   MatCard,
@@ -31,21 +31,22 @@ import primeiraLetraMaiuscula from "../../helpers/primeiraLetraMaiuscula";
     RouterLink,
   ]
 })
-export class UserPage implements OnInit {
+export class UserPage {
   protected nome = '';
   protected email = '';
   protected favoritosIds = [];
   protected pokemonsFavoritos: any = [];
 
-  constructor(private pokemonService: PokemonService, private authService: AuthService) { }
+  constructor(private pokemonService: PokemonService, private authService: AuthService) {}
 
-  ngOnInit() {
+  ionViewWillEnter() {
     const user = this.authService.getUser();
 
     this.nome = user.name;
     this.email = user.email;
 
     this.favoritosIds = this.authService.getFavoritePokemonIds();
+    this.pokemonsFavoritos = [];
 
     this.getPokemonsFavoritos();
   }
