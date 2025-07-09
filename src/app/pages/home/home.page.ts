@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PokemonService } from "../../services/pokemon.service";
 import { Router } from '@angular/router';
 import { forkJoin } from "rxjs";
 import getIdFromUrl from "../../helpers/getIdFromUrl";
 import primeiraLetraMaiuscula from '../../helpers/primeiraLetraMaiuscula';
+import { MatPaginator } from "@angular/material/paginator";
 
 interface Pokemon {
   name: string;
@@ -33,16 +34,24 @@ export class HomePage implements OnInit {
     this.getPokemons();
   }
 
+  @ViewChild('paginator') paginator!: MatPaginator;
+
   async filter(event:any = null) {
-    this.filtro = event.target.value;
+    this.page = 0;
+    this.offset = 0;
+
+    this.filtro = event?.target?.value?.toLowerCase() ?? '';
 
     const resultado = this.pokemons.filter(p =>
       p.name.toLowerCase().includes(this.filtro)
     );
 
     this.total = resultado.length;
-
     this.pokemonsExibidos = resultado.slice(this.offset, this.perPage);
+
+    if (this.paginator) {
+      this.paginator.pageIndex = 0;
+    }
 
     this.handlePokemonImages();
   }
