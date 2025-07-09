@@ -104,6 +104,16 @@ main {
   aspect-ratio: 10 / 10;
 }
 
+@media (min-width: 900px) {
+  .pokemons-favoritos-container {
+    justify-content: flex-start;
+  }
+
+  .pokemon-card {
+    max-width: 50%;
+  }
+}
+
 @media (max-width: 780px) {
   main {
     padding: 15px;
