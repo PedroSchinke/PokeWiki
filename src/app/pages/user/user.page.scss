@@ -14,7 +14,7 @@ main {
 }
 
 .card {
-  width: 100%;
+  width: 30%;
   min-width: fit-content;
   padding: 10px;
   display: flex;
@@ -118,5 +118,9 @@ main {
     grid-template-columns: repeat(auto-fit, minmax(250px, auto));
     gap: 10px;
     flex-wrap: wrap;
+  }
+
+  .card {
+    width: 100%;
   }
 }
