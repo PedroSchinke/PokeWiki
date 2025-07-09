@@ -14,7 +14,19 @@ export class AuthService {
   }
 
   register(data: { name: string, email: string, password: string }) {
-    return this.http.post(`${this.api}/api/register`, data);
+    return this.http.post(`${this.api}/api/register`, data).subscribe({
+      next: (res: any) => {
+        this.removeToken();
+        this.removeUserData();
+        this.saveToken(res.access_token);
+        this.saveUserData({ user: res.user, favorites: res.favorites });
+
+        this.router.navigate(['/home']);
+      },
+      error: err => {
+        console.log('Login inválido', err);
+      }
+    });
   }
 
   me() {

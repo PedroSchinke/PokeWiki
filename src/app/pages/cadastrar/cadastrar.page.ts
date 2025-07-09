@@ -57,14 +57,6 @@ export class CadastrarPage {
       password: this.senha
     };
 
-    this.authService.register(params).subscribe({
-      next: (res: any) => {
-        this.authService.saveToken(res.access_token);
-        this.router.navigate(['/home']);
-      },
-      error: err => {
-        console.log('Login inválido', err);
-      }
-    });
+    this.authService.register(params);
   }
 }
