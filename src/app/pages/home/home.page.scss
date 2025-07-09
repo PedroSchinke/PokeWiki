@@ -45,12 +45,17 @@
   font-family: 'Quicksand', sans-serif;
   font-size: 3.625rem;
   font-weight: 900;
+  text-align: center;
 }
 
 .introducao-container h3 {
   font-family: 'Inter', sans-serif;
   margin-top: 0;
   color: #9b9b9b;
+}
+
+.search-bar {
+  width: 80%;
 }
 
 .spinner {
@@ -112,4 +117,36 @@ ion-card-header {
   width: 79%;
   border-radius: 20px;
   background: #f3f3f3;
+}
+
+@media (max-width: 500px) {
+  .introducao-container h1 {
+    font-size: 2.625rem;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .pokemon-cards-container {
+    width: 100%;
+  }
+
+  .paginator {
+    width: 100%;
+  }
+
+  .mat-mdc-paginator-container {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 780px) {
+  .pokemon-cards-container {
+    grid-template-columns: 1fr;
+  }
+
+  .body-container {
+    padding: 10px;
+  }
 }

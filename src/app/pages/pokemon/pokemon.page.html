@@ -3,7 +3,26 @@
     <mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
 
     <mat-card *ngIf="pokemon && !loading" class="card" appearance="outlined">
-      <div>
+      <div class="card-content">
+        <div class="image-container">
+          <button mat-fab class="change-image-button" aria-label="Seta para a esquerda" (click)="previousImage()">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+
+          <img
+            priority
+            *ngIf="pokemonImage"
+            mat-card-image [ngSrc]="pokemonImage"
+            [alt]="'Image of ' + pokemon.name"
+            class="image"
+            fill
+          >
+
+          <button mat-fab class="change-image-button" aria-label="Seta para a direita" (click)="nextImage()">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+
         <mat-card-header style="margin-bottom: 10px;">
           <mat-card-title class="card-title">
             <h1>{{ primeiraLetraMaiuscula(pokemon.name) }}</h1>
@@ -42,25 +61,6 @@
                 <p>{{ getAbilityEmIngles(habilidade.effect_entries).effect }}</p>
               </div>
             </div>
-          </div>
-
-          <div class="image-container">
-            <button mat-fab class="change-image-button" aria-label="Seta para a esquerda" (click)="previousImage()">
-              <mat-icon>chevron_left</mat-icon>
-            </button>
-
-            <img
-              priority
-              *ngIf="pokemonImage"
-              mat-card-image [ngSrc]="pokemonImage"
-              [alt]="'Image of ' + pokemon.name"
-              class="image"
-              fill
-            >
-
-            <button mat-fab class="change-image-button" aria-label="Seta para a direita" (click)="nextImage()">
-              <mat-icon>chevron_right</mat-icon>
-            </button>
           </div>
         </mat-card-content>
 

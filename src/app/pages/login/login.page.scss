@@ -36,3 +36,25 @@ form {
   color: #5c89d9;
   cursor: pointer;
 }
+
+@media (max-width: 780px) {
+  .form-container {
+    width: 85%;
+  }
+
+  .card-title {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .form-container {
+    width: 95%;
+  }
+
+  form {
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -6,6 +6,14 @@ main {
   font-family: "Quicksand", sans-serif;
 }
 
+button {
+  font-family: "Quicksand", sans-serif;
+}
+
+.mat-mdc-button-disabled {
+  color: #7a7a7a !important;
+}
+
 .spinner {
   margin-top: 150px;
 }
@@ -144,4 +152,51 @@ h2 {
 .evolucoes-buttons-container {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 980px) {
+  .image {
+    width: 300px !important;
+    height: 300px !important;
+    aspect-ratio: 10 / 10;
+  }
+}
+
+@media (max-width: 740px) {
+  .card-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .image-container {
+    position: relative;
+    width: 100%;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .change-image-button {
+    width: 30px;
+    height: auto;
+    aspect-ratio: 10 / 10;
+  }
+
+  .image {
+    width: 80% !important;
+    height: auto !important;
+    aspect-ratio: 10 / 10;
+  }
+
+  .dados-gerais-container {
+    width: 100%;
+    max-width: none;
+  }
+
+  mat-card-header {
+    padding: 0 16px;
+  }
 }
