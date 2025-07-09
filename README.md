@@ -23,7 +23,7 @@ retornando um JWT e os dados do usuário, que são salvos em localstorage para s
 
 ![Demonstração cadastramento de usuário](src/assets/cadastramento_usuario.gif)
 
-*A rota para cadastro de usuários é protegido por um Guard e só é acessível quando o usuário não está logado
+*A rota para cadastro de usuários é protegido por um Guard e só é acessível quando o usuário não está logado.
 
 #### Login:
 
@@ -32,12 +32,13 @@ do usuário e sua lista de pokémons favoritos, que são salvos em localstorage 
 
 ![Demonstração login de usuário](src/assets/login.gif)
 
-*A rota para cadastro de usuários é protegido por um Guard e só é acessível quando o usuário não está logado
+*A rota para cadastro de usuários é protegido por um Guard e só é acessível quando o usuário não está logado.
 
 #### Busca por Pokémons:
 
 É possível navegar através de todos os pokémons da PokéApi ou pesquisar por um pokémon específico na página home do projeto, 
-digitando seu nome na barra de pesquisa.
+digitando seu nome na barra de pesquisa. Na tela de detalhes, é possível visualizar diversas informações e imagens do pokémon, além de
+poder navegar entre suas evoluções.
 
 ![Demonstração busca por pokémon](src/assets/busca_pokemon.gif)
 
@@ -48,6 +49,8 @@ id do pokémon para a minha API, que salva o favorito em uma tabela. Depois é p
 de perfil do usuário.
 
 ![Demonstração favoritar pokémon](src/assets/favoritar_pokemon.gif)
+
+*Apenas usuários logados podem favoritar pokémons.
 
 ### Tecnologias usadas:
 * Ionic
